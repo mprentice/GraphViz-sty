@@ -23,7 +23,7 @@
 
 % parameters to \includedot
 % 1 - parameters for \includegraphics (optional; default value is "scale=1")
-% 2 - name of the dot file
+% 2 - name of the dot file (w/out file extension, which must be `.dot')
 
 % assumes pdflatex. to modify this command for regular latex,
 % replace all .pdf with .ps, and the command becomes simply:
@@ -64,7 +64,7 @@
         We attempted to create it with:\\
         `\texttt{dot -Tpdf #2.dot > #2.pdf}' \\
         but that seems not to have worked. You need to execute `\texttt{pdflatex}' with \\
-        the `\texttt{-shell-escape} option.
+        the `\texttt{-shell-escape}' option.
       \end{tabular}}
   }
 }
