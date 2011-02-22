@@ -56,13 +56,13 @@ graphviz.sty is based on graphviz.tex by Derek Rayside (2003).
 
 2006-03-25:
 
-graphviz.sty by Mark Aufflick ( [mailto:mark@aufflick.com](mark@aufflick.com) )
+graphviz.sty by [Mark Aufflick](mailto:mark@aufflick.com)
 
 Website: [http://mark.aufflick.com/](http://mark.aufflick.com/)
 
 2011-02-21:
 
-Modified by Mike Prentice ( [mailto:mjp44@buffalo.edu](mjp44@buffalo.edu) ) to
+Modified by [Mike Prentice](mailto:mjp44@buffalo.edu) to
 use PDF output directly from dot.
 
 Added includedot command.
