@@ -21,6 +21,10 @@
 % 2 - name of the digraph
 % 3 - body of the digraph
 
+% parameters to \includedot
+% 1 - parameters for \includegraphics (optional; default value is "scale=1")
+% 2 - name of the dot file
+
 % assumes pdflatex. to modify this command for regular latex,
 % replace all .pdf with .ps, and the command becomes simply:
 % dot -Tps #2.dot
@@ -46,4 +50,21 @@
         the `\texttt{-shell-escape} option.
       \end{tabular}} 
   } 
+}
+
+\newcommand{\includedot}[2][scale=1]{ %
+  \immediate\write18{bash -c "dot -Tpdf #2.dot > #2.pdf"}
+  \IfFileExists{#2.pdf}
+  % the pdf exists: include it
+  { \includegraphics[#1]{#2} }
+  % the pdf was not created - show a hint
+  { \fbox{ \begin{tabular}{l}
+        The file \texttt{#2.pdf} hasn't been created from
+        \texttt{#2.dot} yet. \\
+        We attempted to create it with:\\
+        `\texttt{dot -Tpdf #2.dot > #2.pdf}' \\
+        but that seems not to have worked. You need to execute `\texttt{pdflatex}' with \\
+        the `\texttt{-shell-escape} option.
+      \end{tabular}}
+  }
 }
