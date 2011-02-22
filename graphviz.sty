@@ -1,0 +1,44 @@
+% graphviz.sty
+% by Mark Aufflick
+% 2006-03-25
+% mark@aufflick.com
+% http://mark.aufflick.com/
+%
+% based on graphviz.tex by Derek Rayside 2003
+
+% add the following lines to your preamble:
+
+% \usepackage[pdftex]{graphicx}
+% \usepackage{graphviz}
+
+% parameters to \digraph:
+% 1 - parameters for \includegraphics (optional; default value is "scale=1")
+% 2 - name of the digraph
+% 3 - body of the digraph
+
+% assumes pdflatex. to modify this command for regular latex,
+% replace all .pdf with .ps, and the command becomes simply:
+% dot -Tps #2.dot
+
+\ProvidesPackage{graphviz}
+
+\newcommand{\digraph}[3][scale=1]{ 
+  \newwrite\dotfile 
+  \immediate\openout\dotfile=#2.dot 
+  \immediate\write\dotfile{digraph #2 {\string#3}} 
+  \immediate\closeout\dotfile
+  \immediate\write18{bash -c "dot -Tps2 #2.dot | epstopdf --filter -o=#2.pdf"}  
+  \IfFileExists{#2.pdf}
+  % the pdf exists: include it 
+  { \includegraphics[#1]{#2} } 
+  % the pdf was not created - show a hint
+  { \fbox{ \begin{tabular}{l} 
+        The file \texttt{#2.pdf} hasn't been created from 
+        \texttt{#2.dot} yet. \\
+        We attempted to create it with:\\
+        `\texttt{dot -Tps2 #2.dot | epstopdf --filter -o=#2.pdf}' \\
+        but that seems not to have worked. You need to execute `\texttt{pdflatex}' with \\
+        the `\texttt{-shell-escape} option. You also need `\texttt{epstopdf}' from CTAN.
+      \end{tabular}} 
+  } 
+}
