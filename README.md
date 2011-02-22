@@ -10,6 +10,21 @@ Prerequisites
 
 You must have the GraphViz dot program in your path.
 
+Installation
+------------
+
+Copy graphviz.sty to your texmf directory.
+
+On Mac OS X with the MacTeX distribution:
+
+1. Make folder ~/Library/texmf/tex/latex if it doesn't already exist.
+2. Drag and drop graphviz.sty to that folder.
+
+Or for the Terminally ill:
+
+    $ mkdir -p ~/Library/texmf/tex/latex
+    $ cp graphviz.sty ~/Library/texmf/tex/latex
+
 Usage
 -----
 
@@ -49,6 +64,12 @@ command becomes simply:
 
     dot -Tps #2.dot
 
+Other projects
+--------------
+
+[Graphvizzz](https://code.google.com/p/graphvizzz/) on Google Code includes
+support for graph as well as digraph.
+   
 Contributors
 ------------
 
