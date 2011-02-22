@@ -6,6 +6,11 @@
 %
 % based on graphviz.tex by Derek Rayside 2003
 
+% Modified by Mike Prentice (mjp44@buffalo.edu)
+% 2011-02-21
+% To use PDF output directly from dot
+% dot -Tpdf
+
 % add the following lines to your preamble:
 
 % \usepackage[pdftex]{graphicx}
@@ -27,7 +32,7 @@
   \immediate\openout\dotfile=#2.dot 
   \immediate\write\dotfile{digraph #2 {\string#3}} 
   \immediate\closeout\dotfile
-  \immediate\write18{bash -c "dot -Tps2 #2.dot | epstopdf --filter -o=#2.pdf"}  
+  \immediate\write18{bash -c "dot -Tpdf #2.dot > #2.pdf"}  
   \IfFileExists{#2.pdf}
   % the pdf exists: include it 
   { \includegraphics[#1]{#2} } 
@@ -36,9 +41,9 @@
         The file \texttt{#2.pdf} hasn't been created from 
         \texttt{#2.dot} yet. \\
         We attempted to create it with:\\
-        `\texttt{dot -Tps2 #2.dot | epstopdf --filter -o=#2.pdf}' \\
+        `\texttt{dot -Tpdf #2.dot > #2.pdf}' \\
         but that seems not to have worked. You need to execute `\texttt{pdflatex}' with \\
-        the `\texttt{-shell-escape} option. You also need `\texttt{epstopdf}' from CTAN.
+        the `\texttt{-shell-escape} option.
       \end{tabular}} 
   } 
 }
