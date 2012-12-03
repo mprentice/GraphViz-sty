@@ -11,6 +11,12 @@
 % To use PDF output directly from dot
 % dot -Tpdf
 
+% Modified by Remi Dubot (remi.dubot@irit.fr)
+% 2012-12-3
+% To distinguish errors from tex and from dot. 
+% Report dot errors
+% Indications for non english writers
+
 % add the following lines to your preamble:
 
 % \usepackage[pdftex]{graphicx}
@@ -25,46 +31,47 @@
 % 1 - parameters for \includegraphics (optional; default value is "scale=1")
 % 2 - name of the dot file (w/out file extension, which must be `.dot')
 
-% assumes pdflatex. to modify this command for regular latex,
-% replace all .pdf with .ps, and the command becomes simply:
-% dot -Tps #2.dot
+% ASSUMES pdflatex 
+% If you are not using pdflatex, go back on an older version of this style. 
+
+% If you are not writing english, pay attention to your charset. 
+% If is not UTF-8, you may have to indicate your charset to dot with "-Gccharset=XXXX".  
 
 \ProvidesPackage{graphviz}
+
+\newcommand{\includedot}[2][scale=1]{ %
+\ifnum\pdfshellescape=1
+  % Yes, enabled
+    \immediate\write18{bash -c "dot -Tpdf #2.dot -o #2.pdf 2> #2.log"}
+    \IfFileExists{#2.pdf}
+    % the pdf exists: include it
+    { \includegraphics[#1]{#2} }
+    % the pdf was not created - show a hint
+    { \fbox{ \begin{tabular}{l}
+          The file \texttt{#2.pdf} hasn't been created from
+          \texttt{#2.dot} yet. \\
+          We attempted to create it with:\\
+          `\texttt{dot -Tpdf #2.dot -o #2.pdf}' \\
+          but that seems not to have worked.\\
+          \texttt{dot} said : \\
+          "\texttt{\input{#2.log}}"
+        \end{tabular}}
+    }
+
+  \else
+    \fbox{ \begin{tabular}{l}
+            You need to execute `\texttt{pdflatex}' with the `\texttt{-shell-escape}' option.\\
+            This allows the graphviz package to execute the program dot. 
+          \end{tabular}}
+  \fi
+}
 
 \newcommand{\digraph}[3][scale=1]{ 
   \newwrite\dotfile 
   \immediate\openout\dotfile=#2.dot 
   \immediate\write\dotfile{digraph #2 {\string#3}} 
   \immediate\closeout\dotfile
-  \immediate\write18{bash -c "dot -Tpdf #2.dot > #2.pdf"}  
-  \IfFileExists{#2.pdf}
-  % the pdf exists: include it 
-  { \includegraphics[#1]{#2} } 
-  % the pdf was not created - show a hint
-  { \fbox{ \begin{tabular}{l} 
-        The file \texttt{#2.pdf} hasn't been created from 
-        \texttt{#2.dot} yet. \\
-        We attempted to create it with:\\
-        `\texttt{dot -Tpdf #2.dot > #2.pdf}' \\
-        but that seems not to have worked. You need to execute `\texttt{pdflatex}' with \\
-        the `\texttt{-shell-escape} option.
-      \end{tabular}} 
-  } 
+  \includedot[#1]{#2}
 }
 
-\newcommand{\includedot}[2][scale=1]{ %
-  \immediate\write18{bash -c "dot -Tpdf #2.dot > #2.pdf"}
-  \IfFileExists{#2.pdf}
-  % the pdf exists: include it
-  { \includegraphics[#1]{#2} }
-  % the pdf was not created - show a hint
-  { \fbox{ \begin{tabular}{l}
-        The file \texttt{#2.pdf} hasn't been created from
-        \texttt{#2.dot} yet. \\
-        We attempted to create it with:\\
-        `\texttt{dot -Tpdf #2.dot > #2.pdf}' \\
-        but that seems not to have worked. You need to execute `\texttt{pdflatex}' with \\
-        the `\texttt{-shell-escape}' option.
-      \end{tabular}}
-  }
-}
+
