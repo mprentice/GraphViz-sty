@@ -39,13 +39,13 @@
 
 \ProvidesPackage{graphviz}
 
-\newcommand{\includedot}[2][scale=1]{ %
-\ifnum\pdfshellescape=1
+\newcommand{\includedot}[2][scale=1]{%
+  \ifnum\pdfshellescape=1
   % Yes, enabled
-    \immediate\write18{bash -c "dot -Tpdf #2.dot -o #2.pdf 2> #2.log"}
+    \immediate\write18{bash -c "dot -Tpdf #2.dot -o #2.pdf 2> #2.log"}%
     \IfFileExists{#2.pdf}
     % the pdf exists: include it
-    { \includegraphics[#1]{#2} }
+    {\includegraphics[#1]{#2}}
     % the pdf was not created - show a hint
     { \fbox{ \begin{tabular}{l}
           The file \texttt{#2.pdf} hasn't been created from
@@ -57,7 +57,6 @@
           "\texttt{\input{#2.log}}"
         \end{tabular}}
     }
-
   \else
     \fbox{ \begin{tabular}{l}
             You need to execute `\texttt{pdflatex}' with the `\texttt{-shell-escape}' option.\\
@@ -73,5 +72,6 @@
   \immediate\closeout\dotfile
   \includedot[#1]{#2}
 }
+
 
 
